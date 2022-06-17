@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { notesList } from '../../shared/data'
+import { notesList, chordsList } from '../../shared/data'
 
 import {
    Container,
@@ -13,8 +13,11 @@ import {
 
 export const Piano = () => {
    const [notes, setNotes] = useState(notesList)
+   const [chords, setChords] = useState(chordsList)
+
    const [notesToFilter, setNotesToFilter] = useState([])
    const [selectedNote, setSelectedNote] = useState('C')
+   const [pressedKeys, setPressedKeys] = useState([])
 
    const [whiteKeys, setWhiteKeys] = useState([])
    const [blackKeys, setBlackKeys] = useState([])
@@ -29,16 +32,40 @@ export const Piano = () => {
       let blackNotes = notes.filter(note => note.color === 'black')
       let notesToFilter = notes.filter(note => note.octave === 1)
 
+      whiteNotes.map(note => (
+         note.pressed = false
+      ))
+
+      blackNotes.map(note => (
+         note.pressed = false
+      ))
+
       setWhiteKeys(whiteNotes)
       setBlackKeys(blackNotes)
       setNotesToFilter(notesToFilter)
    }, [notes])
 
+   function colorKeys(pressed) {
+      pressedKeys.map(key => {
+         whiteKeys.map(note => {
+            if (note.id === key) return note.pressed = pressed
+         })
+         blackKeys.map(note => {
+            if (note.id === key) return note.pressed = pressed
+         })
+      })
+   }
+
    function majorChord() {
       setDisplayMajorChord(true)
+      let chord = chords.find(chord => chord.note === selectedNote && chord.type === 'maior')
+
+      setPressedKeys(chord.keys)
+      colorKeys(true)
 
       setTimeout(() => {
          setDisplayMajorChord(false)
+         colorKeys(false)
       }, 2000)
    }
 
@@ -96,12 +123,12 @@ export const Piano = () => {
          <Content>
             <ContentBlackNotes>{
                blackKeys.map(key => (
-                  <BlackKey left={key.left}>{key.name}</BlackKey>
+                  <BlackKey key={key.id} pressed={key.pressed} left={key.left}>{key.id}|{key.name}</BlackKey>
                ))
             }</ContentBlackNotes>
             <ContentWhiteNotes>{
                whiteKeys.map(key => (
-                  <WhiteKey>{key.name}</WhiteKey>
+                  <WhiteKey key={key.id} pressed={key.pressed}>{key.id}|{key.name}</WhiteKey>
                ))
             }</ContentWhiteNotes>
          </Content>
@@ -132,6 +159,11 @@ export const Piano = () => {
       <Container>
          <h1>Meus estudos de teclado</h1>
          <Title />
+         <ul>{
+            pressedKeys.map((key, index) => (
+               <li key={index}>{key}</li>
+            ))
+         }</ul>
          <MyPiano />
          <Options />
       </Container>

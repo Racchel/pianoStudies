@@ -52,27 +52,41 @@ export const ContentBlackNotes = styled.div`
 export const WhiteKey = styled.button`
    width: 80px;
    height: 100%;
-   background-image: linear-gradient(to bottom, #eee 0%, white 100%);
    color: ${colorPalette.black};
    position: relative;
    ${keyStyle};
 
+   background-image: ${props => props.pressed
+      ? 'linear-gradient(to left, red 50%, red 100%)'
+      : 'linear-gradient(to bottom, #eee 0%, white 100%)'
+   };
+
    :hover {
-      background-image: linear-gradient(to bottom, #ccc 0%, white 100%);
+      background-image: ${props => props.pressed
+      ? 'linear-gradient(to left, red 50%, red 100%)'
+      : 'background-image: linear-gradient(to bottom, #ccc 0%, white 100%)'
+   };
    }
 `
 
 export const BlackKey = styled.button`
    width: 50px;
    height: 60%;
-   background-image: linear-gradient(to left, #434343 50%, black 100%);
    color: ${colorPalette.white};
    position: absolute;
    z-index: 2;
    left: ${props => props.left};
    ${keyStyle};
 
+   background-image: ${props => props.pressed
+      ? 'linear-gradient(to left, red 50%, red 100%)'
+      : 'linear-gradient(to left, #434343 50%, black 100%)'
+   };
+
    :hover {
-      background-image: linear-gradient(to left, #434343 0%, black 100%);
+      background-image: ${props => props.pressed
+      ? 'linear-gradient(to left, red 50%, red 100%)'
+      : 'linear-gradient(to left, #434343 0%, black 100%)'
+   };
    }
 `
