@@ -12,56 +12,44 @@ import {
 
 
 export const Piano = () => {
-   const [notes, setNotes] = useState(notesList)
-   const [chord, setChord] = useState([])
-   const [chordDescription, setChordDescription] = useState('')
-   const [isBemol, setIsBemol] = useState(false)
-
-   const [notesToFilter, setNotesToFilter] = useState([])
+   const [title, setTitle] = useState('Vamos começar?')
+   const [historic, setHistoric] = useState('')
    const [selectedNote, setSelectedNote] = useState('C')
 
+   const [notesToFilter, setNotesToFilter] = useState([])
    const [whiteKeys, setWhiteKeys] = useState([])
    const [blackKeys, setBlackKeys] = useState([])
 
-   const [displayMajorChord, setDisplayMajorChord] = useState(false)
-   const [displayMinorChord, setDisplayMinorChord] = useState(false)
-   const [displayScale, setDisplayScale] = useState(false)
-
+   const [isBemol, setIsBemol] = useState(false)
+   const [disabledButtons, setDisabledButtons] = useState(false)
 
    useEffect(() => {
-      let whiteNotes = notes.filter(note => note.color === 'white')
-      let blackNotes = notes.filter(note => note.color === 'black')
-      let notesToFilter = notes.filter(note => note.octave === 1)
+      let whiteNotes = notesList.filter(note => note.color === 'white')
+      let blackNotes = notesList.filter(note => note.color === 'black')
+      let notesToFilter = notesList.filter(note => note.octave === 1)
 
-      whiteNotes.map(note => (
-         note.pressed = false
-      ))
-
-      blackNotes.map(note => (
-         note.pressed = false
-      ))
+      whiteNotes.map(note => note.pressed = false)
+      blackNotes.map(note => note.pressed = false)
 
       setWhiteKeys(whiteNotes)
       setBlackKeys(blackNotes)
       setNotesToFilter(notesToFilter)
-
-   }, [notes])
+   }, [])
 
    function colorKeys(pressed, keys) {
-      setChord(keys)
-
-      keys.map(key => {
-         whiteKeys.map(note => {
+      keys.forEach(key => {
+         whiteKeys.forEach(note => {
             if (note.id === key.id) return note.pressed = pressed
          })
-         blackKeys.map(note => {
+         blackKeys.forEach(note => {
             if (note.id === key.id) return note.pressed = pressed
          })
       })
    }
 
    function generalChord(type) {
-      let chord = notes.find(note => note.name === selectedNote && note.octave === 1)
+      setDisabledButtons(true)
+      let chord = notesList.find(note => note.name === selectedNote && note.octave === 1)
       let ids = [chord.id, chord.id, chord.id + 7]
       type === 'maior' ? ids[1] += 4 : ids[1] += 3
 
@@ -72,75 +60,35 @@ export const Piano = () => {
          },
          {
             id: ids[1],
-            name: notes.find(note => note.id === ids[1]).name
+            name: notesList.find(note => note.id === ids[1]).name
          },
          {
             id: ids[2],
-            name: notes.find(note => note.id === ids[2]).name
+            name: notesList.find(note => note.id === ids[2]).name
          }
       ]
 
-      setChordDescription(`Acorde ${type} de ${selectedNote}: ${keys[0]?.name} - ${keys[1]?.name} - ${keys[2]?.name}`)
-      setDisplayMajorChord(true)
-
+      let description = `Acorde ${type} de ${selectedNote}: ${keys[0]?.name} - ${keys[1]?.name} - ${keys[2]?.name}`
+      setHistoric(description)
+      setTitle(description)
       colorKeys(true, keys)
 
       setTimeout(() => {
-         setDisplayMajorChord(false)
          colorKeys(false, keys)
+         setDisabledButtons(false)
+         setTitle('Quer escolher um novo acorde?')
       }, 5000)
    }
 
-   function majorChord() {
-      generalChord('maior')
-   }
-
-   function minorChord() {
-      generalChord('menor')
-
-   }
-
-   function scale() {
-      setDisplayScale(true)
-
-      setTimeout(() => {
-         setDisplayScale(false)
-      }, 2000)
-   }
+   function scale() { }
 
    function Button({ handleClick, name }) {
       return (
          <button
-            disabled={displayMajorChord || displayMinorChord || displayScale}
+            disabled={disabledButtons}
             onClick={() => handleClick()}
          >{name}
          </button>
-      )
-   }
-
-   function Title() {
-
-      let title = ''
-
-      switch (true) {
-         case displayMajorChord:
-            title = chordDescription
-            break;
-         case displayMinorChord:
-            title = chordDescription
-            break;
-         case displayScale:
-            title = `Escala de ${selectedNote} `
-            break;
-         default:
-            title = 'Escolha uma função para ser executada.'
-
-      }
-
-      return (
-         <>
-            <h2>{title}</h2>
-         </>
       )
    }
 
@@ -166,14 +114,13 @@ export const Piano = () => {
    function Options() {
       return (
          <div>
-            <Button handleClick={() => majorChord()} name='Acorde maior' />
-            <Button handleClick={() => minorChord()} name='Acorde menor' />
+            <Button handleClick={() => generalChord('maior')} name='Acorde maior' />
+            <Button handleClick={() => generalChord('menor')} name='Acorde menor' />
             <Button handleClick={() => scale()} name='Escala' />
             <Button handleClick={() => setIsBemol(!isBemol)} name='Ver bemol' />
 
-
             <select
-               disabled={displayMajorChord || displayMinorChord || displayScale}
+               disabled={disabledButtons}
                value={selectedNote}
                onChange={(e) => setSelectedNote(e.target.value)}>
 
@@ -188,10 +135,10 @@ export const Piano = () => {
    return (
       <Container>
          <h1>Meus estudos de teclado</h1>
-         <Title />
+         <h2>{title}</h2>
          <MyPiano />
 
-         <p>{chordDescription ? `Última ação | ${chordDescription}` : 'Faça sua primeira ação'}</p>
+         <p>{historic ? `Última ação | ${historic}` : 'Faça sua primeira ação'}</p>
 
          <Options />
       </Container>
