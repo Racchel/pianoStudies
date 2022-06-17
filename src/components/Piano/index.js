@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { useEffect, useState } from 'react'
 import { notesList, chordsList } from '../../shared/data'
 
@@ -17,7 +18,6 @@ export const Piano = () => {
 
    const [notesToFilter, setNotesToFilter] = useState([])
    const [selectedNote, setSelectedNote] = useState('C')
-   const [pressedKeys, setPressedKeys] = useState([])
 
    const [whiteKeys, setWhiteKeys] = useState([])
    const [blackKeys, setBlackKeys] = useState([])
@@ -43,10 +43,18 @@ export const Piano = () => {
       setWhiteKeys(whiteNotes)
       setBlackKeys(blackNotes)
       setNotesToFilter(notesToFilter)
+
    }, [notes])
 
-   function colorKeys(pressed) {
-      pressedKeys.map(key => {
+   function colorKeys(pressed, keys) {
+      console.log('keys', keys)
+
+      console.log('whiteKeys', whiteKeys)
+      console.log('blackKeys', blackKeys)
+      console.log('----------------------')
+
+
+      keys.map(key => {
          whiteKeys.map(note => {
             if (note.id === key) return note.pressed = pressed
          })
@@ -60,13 +68,12 @@ export const Piano = () => {
       setDisplayMajorChord(true)
       let chord = chords.find(chord => chord.note === selectedNote && chord.type === 'maior')
 
-      setPressedKeys(chord.keys)
-      colorKeys(true)
+      colorKeys(true, chord.keys)
 
       setTimeout(() => {
          setDisplayMajorChord(false)
-         colorKeys(false)
-      }, 2000)
+         colorKeys(false, chord.keys)
+      }, 5000)
    }
 
    function minorChord() {
@@ -159,11 +166,6 @@ export const Piano = () => {
       <Container>
          <h1>Meus estudos de teclado</h1>
          <Title />
-         <ul>{
-            pressedKeys.map((key, index) => (
-               <li key={index}>{key}</li>
-            ))
-         }</ul>
          <MyPiano />
          <Options />
       </Container>
