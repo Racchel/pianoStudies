@@ -36,6 +36,15 @@ export const Piano = () => {
       setNotesToFilter(notesToFilter)
    }, [])
 
+   function displayBemol() {
+      setIsBemol(!isBemol)
+      blackKeys.forEach(note => {
+         note.color === 'black' && isBemol
+            ? note.name = note.bemolName
+            : note.name = note.sustenidoName
+      })
+   }
+
    function colorKeys(pressed, keys) {
       keys.forEach(key => {
          whiteKeys.forEach(note => {
@@ -97,9 +106,7 @@ export const Piano = () => {
          <Content>
             <ContentBlackNotes>{
                blackKeys.map(key => (
-                  <BlackKey key={key.id} pressed={key.pressed} left={key.left}>
-                     {isBemol ? key.name : key.name}
-                  </BlackKey>
+                  <BlackKey key={key.id} pressed={key.pressed} left={key.left}>{key.name}</BlackKey>
                ))
             }</ContentBlackNotes>
             <ContentWhiteNotes>{
@@ -117,7 +124,7 @@ export const Piano = () => {
             <Button handleClick={() => generalChord('maior')} name='Acorde maior' />
             <Button handleClick={() => generalChord('menor')} name='Acorde menor' />
             <Button handleClick={() => scale()} name='Escala' />
-            <Button handleClick={() => setIsBemol(!isBemol)} name='Ver bemol' />
+            <Button handleClick={() => displayBemol()} name='Ver bemol' />
 
             <select
                disabled={disabledButtons}
