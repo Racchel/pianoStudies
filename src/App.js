@@ -1,11 +1,11 @@
-import { Piano2 } from './components'
+import { Piano } from './components'
 import { GlobalStyle } from './style'
 
 function App() {
   return (
     <>
       <GlobalStyle />
-      <Piano2 />
+      <Piano />
     </>
   );
 }

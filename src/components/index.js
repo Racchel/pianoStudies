@@ -1,3 +1,3 @@
-import { Piano2 } from './Piano2'
+import { Piano } from './Piano'
 
-export { Piano2 }
+export { Piano }

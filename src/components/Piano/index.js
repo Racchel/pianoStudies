@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { whiteNoteList, blackNoteList } from '../../shared/data/index.js'
+import { useEffect, useState } from 'react'
+import { notesList } from '../../shared/data'
+
 import {
    Container,
    Content,
@@ -10,24 +11,32 @@ import {
 } from './style'
 
 export function Piano() {
-   const [whiteNotes, setWhiteNotes] = useState(whiteNoteList)
-   const [blackNotes, setBlackNotes] = useState(blackNoteList)
+   const [notes, setNotes] = useState(notesList)
+   const [whiteKeys, setWhiteKeys] = useState([])
+   const [blackKeys, setBlackKeys] = useState([])
+
+   useEffect(() => {
+      let whiteNotes = notes.filter(note => note.color === 'white')
+      let blackNotes = notes.filter(note => note.color === 'black')
+
+      setWhiteKeys(whiteNotes)
+      setBlackKeys(blackNotes)
+   }, [])
+
 
    return (
       <Container>
          <Content>
-            <BlackKey left='55px'>{blackNotes[0].sustenidoName}</BlackKey>
-            <BlackKey left='135px'>{blackNotes[1].sustenidoName}</BlackKey>
-            <BlackKey left='295px'>{blackNotes[2].sustenidoName}</BlackKey>
-            <BlackKey left='375px'>{blackNotes[3].sustenidoName}</BlackKey>
-            <BlackKey left='455px'>{blackNotes[4].sustenidoName}</BlackKey>
-
-            <ContentWhiteNotes>
-               {whiteNotes.map(nota => (
-                  <WhiteKey>{nota.name}</WhiteKey>
-               ))}
-            </ContentWhiteNotes>
-
+            <ContentBlackNotes>{
+               blackKeys.map(key => (
+                  <BlackKey left={key.left}>{key.sustenidoName}#</BlackKey>
+               ))
+            }</ContentBlackNotes>
+            <ContentWhiteNotes>{
+               whiteKeys.map(key => (
+                  <WhiteKey>{key.name}</WhiteKey>
+               ))
+            }</ContentWhiteNotes>
          </Content>
       </Container>
    )
