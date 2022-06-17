@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { notesList, chordsList } from '../../shared/data'
+import { notesList } from '../../shared/data'
 
 import {
    Container,
@@ -13,7 +13,9 @@ import {
 
 export const Piano = () => {
    const [notes, setNotes] = useState(notesList)
-   const [chords, setChords] = useState(chordsList)
+   const [chord, setChord] = useState([])
+   const [chordDescription, setChordDescription] = useState('')
+   const [isBemol, setIsBemol] = useState(false)
 
    const [notesToFilter, setNotesToFilter] = useState([])
    const [selectedNote, setSelectedNote] = useState('C')
@@ -46,25 +48,46 @@ export const Piano = () => {
    }, [notes])
 
    function colorKeys(pressed, keys) {
+      setChord(keys)
+
       keys.map(key => {
          whiteKeys.map(note => {
-            if (note.id === key) return note.pressed = pressed
+            if (note.id === key.id) return note.pressed = pressed
          })
          blackKeys.map(note => {
-            if (note.id === key) return note.pressed = pressed
+            if (note.id === key.id) return note.pressed = pressed
          })
       })
    }
 
    function generalChord(type) {
-      setDisplayMajorChord(true)
-      let chord = chords.find(chord => chord.note === selectedNote && chord.type === type)
+      let chord = notes.find(note => note.name === selectedNote && note.octave === 1)
+      let ids = [chord.id, chord.id, chord.id + 7]
+      type === 'maior' ? ids[1] += 4 : ids[1] += 3
 
-      colorKeys(true, chord.keys)
+      let keys = [
+         {
+            id: ids[0],
+            name: chord.name
+         },
+         {
+            id: ids[1],
+            name: notes.find(note => note.id === ids[1]).name
+         },
+         {
+            id: ids[2],
+            name: notes.find(note => note.id === ids[2]).name
+         }
+      ]
+
+      setChordDescription(`Acorde ${type} de ${selectedNote}: ${keys[0]?.name} - ${keys[1]?.name} - ${keys[2]?.name}`)
+      setDisplayMajorChord(true)
+
+      colorKeys(true, keys)
 
       setTimeout(() => {
          setDisplayMajorChord(false)
-         colorKeys(false, chord.keys)
+         colorKeys(false, keys)
       }, 5000)
    }
 
@@ -101,20 +124,23 @@ export const Piano = () => {
 
       switch (true) {
          case displayMajorChord:
-            title = `Acorde maior de ${selectedNote}`
+            title = chordDescription
             break;
          case displayMinorChord:
-            title = `Acorde menor de ${selectedNote}`
+            title = chordDescription
             break;
          case displayScale:
-            title = `Escala de ${selectedNote}`
+            title = `Escala de ${selectedNote} `
             break;
          default:
             title = 'Escolha uma função para ser executada.'
+
       }
 
       return (
-         <h2>{title}</h2>
+         <>
+            <h2>{title}</h2>
+         </>
       )
    }
 
@@ -123,12 +149,14 @@ export const Piano = () => {
          <Content>
             <ContentBlackNotes>{
                blackKeys.map(key => (
-                  <BlackKey key={key.id} pressed={key.pressed} left={key.left}>{key.id}|{key.name}</BlackKey>
+                  <BlackKey key={key.id} pressed={key.pressed} left={key.left}>
+                     {isBemol ? key.name : key.name + '#'}
+                  </BlackKey>
                ))
             }</ContentBlackNotes>
             <ContentWhiteNotes>{
                whiteKeys.map(key => (
-                  <WhiteKey key={key.id} pressed={key.pressed}>{key.id}|{key.name}</WhiteKey>
+                  <WhiteKey key={key.id} pressed={key.pressed}>{key.name}</WhiteKey>
                ))
             }</ContentWhiteNotes>
          </Content>
@@ -141,6 +169,8 @@ export const Piano = () => {
             <Button handleClick={() => majorChord()} name='Acorde maior' />
             <Button handleClick={() => minorChord()} name='Acorde menor' />
             <Button handleClick={() => scale()} name='Escala' />
+            <Button handleClick={() => setIsBemol(!isBemol)} name='Ver bemol' />
+
 
             <select
                disabled={displayMajorChord || displayMinorChord || displayScale}
@@ -160,6 +190,9 @@ export const Piano = () => {
          <h1>Meus estudos de teclado</h1>
          <Title />
          <MyPiano />
+
+         <p>{chordDescription ? `Última ação | ${chordDescription}` : 'Faça sua primeira ação'}</p>
+
          <Options />
       </Container>
    )
