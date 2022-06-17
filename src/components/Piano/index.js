@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { useEffect, useState } from 'react'
 import { notesList, chordsList } from '../../shared/data'
 
@@ -47,13 +46,6 @@ export const Piano = () => {
    }, [notes])
 
    function colorKeys(pressed, keys) {
-      console.log('keys', keys)
-
-      console.log('whiteKeys', whiteKeys)
-      console.log('blackKeys', blackKeys)
-      console.log('----------------------')
-
-
       keys.map(key => {
          whiteKeys.map(note => {
             if (note.id === key) return note.pressed = pressed
@@ -64,9 +56,9 @@ export const Piano = () => {
       })
    }
 
-   function majorChord() {
+   function generalChord(type) {
       setDisplayMajorChord(true)
-      let chord = chords.find(chord => chord.note === selectedNote && chord.type === 'maior')
+      let chord = chords.find(chord => chord.note === selectedNote && chord.type === type)
 
       colorKeys(true, chord.keys)
 
@@ -76,12 +68,13 @@ export const Piano = () => {
       }, 5000)
    }
 
-   function minorChord() {
-      setDisplayMinorChord(true)
+   function majorChord() {
+      generalChord('maior')
+   }
 
-      setTimeout(() => {
-         setDisplayMinorChord(false)
-      }, 2000)
+   function minorChord() {
+      generalChord('menor')
+
    }
 
    function scale() {
