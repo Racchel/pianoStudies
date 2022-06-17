@@ -8,7 +8,7 @@ export const notesList = [
    },
    {
       id: 2,
-      name: 'C',
+      name: 'C#',
       color: 'black',
       octave: 1,
       tone: 0.5,
@@ -23,7 +23,7 @@ export const notesList = [
    },
    {
       id: 4,
-      name: 'D',
+      name: 'D#',
       color: 'black',
       octave: 1,
       tone: 0.5,
@@ -45,7 +45,7 @@ export const notesList = [
    },
    {
       id: 7,
-      name: 'F',
+      name: 'F#',
       color: 'black',
       octave: 1,
       tone: 0.5,
@@ -60,7 +60,7 @@ export const notesList = [
    },
    {
       id: 9,
-      name: 'G',
+      name: 'G#',
       color: 'black',
       octave: 1,
       tone: 0.5,
@@ -75,7 +75,7 @@ export const notesList = [
    },
    {
       id: 11,
-      name: 'A',
+      name: 'A#',
       color: 'black',
       octave: 1,
       tone: 0.5,
@@ -97,7 +97,7 @@ export const notesList = [
    },
    {
       id: 14,
-      name: 'C',
+      name: 'C#',
       color: 'black',
       octave: 2,
       tone: 0.5,
@@ -112,7 +112,7 @@ export const notesList = [
    },
    {
       id: 16,
-      name: 'D',
+      name: 'D#',
       color: 'black',
       octave: 2,
       tone: 0.5,
@@ -134,7 +134,7 @@ export const notesList = [
    },
    {
       id: 19,
-      name: 'F',
+      name: 'F#',
       color: 'black',
       octave: 2,
       tone: 0.5,
@@ -149,7 +149,7 @@ export const notesList = [
    },
    {
       id: 21,
-      name: 'G',
+      name: 'G#',
       color: 'black',
       octave: 2,
       tone: 0.5,
@@ -164,7 +164,7 @@ export const notesList = [
    },
    {
       id: 23,
-      name: 'A',
+      name: 'A#',
       color: 'black',
       octave: 2,
       tone: 0.5,

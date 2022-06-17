@@ -150,7 +150,7 @@ export const Piano = () => {
             <ContentBlackNotes>{
                blackKeys.map(key => (
                   <BlackKey key={key.id} pressed={key.pressed} left={key.left}>
-                     {isBemol ? key.name : key.name + '#'}
+                     {isBemol ? key.name : key.name}
                   </BlackKey>
                ))
             }</ContentBlackNotes>
