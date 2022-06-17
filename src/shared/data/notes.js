@@ -8,8 +8,8 @@ export const notesList = [
    },
    {
       id: 2,
-      sustenidoName: 'C',
-      bemolName: 'D',
+      name: 'C#',
+      bemolName: 'Db',
       color: 'black',
       octave: 1,
       tone: 0.5,
@@ -24,8 +24,8 @@ export const notesList = [
    },
    {
       id: 4,
-      sustenidoName: 'D',
-      bemolName: 'E',
+      name: 'D#',
+      bemolName: 'Eb',
       color: 'black',
       octave: 1,
       tone: 0.5,
@@ -47,8 +47,8 @@ export const notesList = [
    },
    {
       id: 7,
-      sustenidoName: 'F',
-      bemolName: 'G',
+      name: 'F#',
+      bemolName: 'Gb',
       color: 'black',
       octave: 1,
       tone: 0.5,
@@ -63,8 +63,8 @@ export const notesList = [
    },
    {
       id: 9,
-      sustenidoName: 'G',
-      bemolName: 'A',
+      name: 'G#',
+      bemolName: 'Ab',
       color: 'black',
       octave: 1,
       tone: 0.5,
@@ -79,8 +79,8 @@ export const notesList = [
    },
    {
       id: 11,
-      sustenidoName: 'A',
-      bemolName: 'B',
+      name: 'A#',
+      bemolName: 'Bb',
       color: 'black',
       octave: 1,
       tone: 0.5,
@@ -89,7 +89,7 @@ export const notesList = [
    {
       id: 12,
       name: 'B',
-      bemolName: 'C',
+      bemolName: 'Cb',
       color: 'white',
       octave: 1,
       tone: 0.5
@@ -103,8 +103,8 @@ export const notesList = [
    },
    {
       id: 14,
-      sustenidoName: 'C',
-      bemolName: 'D',
+      name: 'C#',
+      bemolName: 'Db',
       color: 'black',
       octave: 2,
       tone: 0.5,
@@ -119,8 +119,8 @@ export const notesList = [
    },
    {
       id: 16,
-      sustenidoName: 'D',
-      bemolName: 'E',
+      name: 'D#',
+      bemolName: 'Eb',
       color: 'black',
       octave: 2,
       tone: 0.5,
@@ -142,8 +142,8 @@ export const notesList = [
    },
    {
       id: 19,
-      sustenidoName: 'F',
-      bemolName: 'G',
+      name: 'F#',
+      bemolName: 'Gb',
       color: 'black',
       octave: 2,
       tone: 0.5,
@@ -158,8 +158,8 @@ export const notesList = [
    },
    {
       id: 21,
-      sustenidoName: 'G',
-      bemolName: 'A',
+      name: 'G#',
+      bemolName: 'Ab',
       color: 'black',
       octave: 2,
       tone: 0.5,
@@ -174,8 +174,8 @@ export const notesList = [
    },
    {
       id: 23,
-      sustenidoName: 'A',
-      bemolName: 'B',
+      name: 'A#',
+      bemolName: 'Bb',
       color: 'black',
       octave: 2,
       tone: 0.5,
@@ -184,7 +184,7 @@ export const notesList = [
    {
       id: 24,
       name: 'B',
-      bemolName: 'C',
+      bemolName: 'Cb',
       color: 'white',
       octave: 2,
       tone: 0.5
