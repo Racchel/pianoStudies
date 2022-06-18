@@ -23,7 +23,12 @@ export const Piano = () => {
    const [isBemol, setIsBemol] = useState(false)
    const [disabledButtons, setDisabledButtons] = useState(false)
 
+
    useEffect(() => {
+      reset()
+   }, [])
+
+   function reset() {
       let whiteNotes = notesList.filter(note => note.color === 'white')
       let blackNotes = notesList.filter(note => note.color === 'black')
       let notesToFilter = notesList.filter(note => note.octave === 1)
@@ -34,7 +39,7 @@ export const Piano = () => {
       setWhiteKeys(whiteNotes)
       setBlackKeys(blackNotes)
       setNotesToFilter(notesToFilter)
-   }, [])
+   }
 
    function displayBemol() {
       setIsBemol(!isBemol)
@@ -45,51 +50,76 @@ export const Piano = () => {
       })
    }
 
-   function colorKeys(pressed, keys) {
-      keys.forEach(key => {
-         whiteKeys.forEach(note => {
-            if (note.id === key.id) return note.pressed = pressed
-         })
-         blackKeys.forEach(note => {
-            if (note.id === key.id) return note.pressed = pressed
-         })
+   function changePropertyOfAnItemListById(listRef, handleChange, id, property, value) {
+      listRef.forEach((note, index) => {
+         if (note.id === id) {
+            let listRefCopy = [...listRef]
+            listRefCopy[index][property] = value
+            handleChange(listRefCopy)
+         }
       })
    }
 
-   function generalChord(type) {
+   function colorKeys(pressed, keyList) {
+      keyList.forEach(key => {
+         changePropertyOfAnItemListById(whiteKeys, setWhiteKeys, key.id, 'pressed', pressed)
+         changePropertyOfAnItemListById(blackKeys, setBlackKeys, key.id, 'pressed', pressed)
+      })
+   }
+
+
+   function generalAction(newTitle, newDescription, keyList) {
       setDisabledButtons(true)
-      let chord = notesList.find(note => note.name === selectedNote && note.octave === 1)
-      let ids = [chord.id, chord.id, chord.id + 7]
-      type === 'maior' ? ids[1] += 4 : ids[1] += 3
-
-      let keys = [
-         {
-            id: ids[0],
-            name: chord.name
-         },
-         {
-            id: ids[1],
-            name: notesList.find(note => note.id === ids[1]).name
-         },
-         {
-            id: ids[2],
-            name: notesList.find(note => note.id === ids[2]).name
-         }
-      ]
-
-      let description = `Acorde ${type} de ${selectedNote}: ${keys[0]?.name} - ${keys[1]?.name} - ${keys[2]?.name}`
-      setHistoric(description)
-      setTitle(description)
-      colorKeys(true, keys)
+      setHistoric(newDescription)
+      setTitle(newDescription)
+      colorKeys(true, keyList)
 
       setTimeout(() => {
-         colorKeys(false, keys)
+         colorKeys(false, keyList)
          setDisabledButtons(false)
-         setTitle('Quer escolher um novo acorde?')
+         setTitle(newTitle)
       }, 5000)
    }
 
-   function scale() { }
+   function generalChord(type) {
+
+      let chord = notesList.find(note => note.name === selectedNote && note.octave === 1)
+      let ids = [chord.id, type === 'maior' ? chord.id + 4 : chord.id + 3, chord.id + 7]
+
+      let keyList = ids.map((id, index) => {
+         return { id: id, name: notesList.find(note => note.id === ids[index]).name }
+      })
+
+      let newTitle = 'Quer escolher um novo acorde?'
+      let newDescription = generateDescription(`Acordes de ${selectedNote} ${type}`, keyList)
+      generalAction(newTitle, newDescription, keyList)
+   }
+
+   function generateDescription(prefix, keyList) {
+      let newDescription = ''
+
+      keyList.forEach((key, index) => {
+         newDescription += index !== keyList.length - 1
+            ? key.name + ' - '
+            : key.name
+      })
+
+      return prefix + ' : ' + newDescription
+   }
+
+   function scale() {
+      let note = notesList.find(note => note.name === selectedNote && note.octave === 1)
+      let ids = [note.id, note.id + 2, note.id + 4, note.id + 5, note.id + 7, note.id + 9, note.id + 11, note.id + 12]
+
+      let keyList = ids.map((id, index) => {
+         return { id: id, name: notesList.find(note => note.id === ids[index]).name }
+      })
+
+      let newTitle = 'Quer escolher uma nova escala?'
+      let newDescription = generateDescription(`Escala de ${selectedNote}`, keyList)
+      generalAction(newTitle, newDescription, keyList)
+
+   }
 
    function Button({ handleClick, name }) {
       return (
